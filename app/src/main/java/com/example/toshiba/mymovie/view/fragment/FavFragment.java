@@ -1,7 +1,6 @@
 package com.example.toshiba.mymovie.view.fragment;
 
 
-import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,11 +13,11 @@ import android.view.ViewGroup;
 
 import com.example.toshiba.mymovie.R;
 import com.example.toshiba.mymovie.adapter.AMovie;
+import com.example.toshiba.mymovie.db.MovieHelper;
 import com.example.toshiba.mymovie.model.ResultsItem;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import static com.example.toshiba.mymovie.db.DatabaseContract.MovieColumns.CONTENT_URI;
 import static com.example.toshiba.mymovie.db.DatabaseContract.MovieColumns.ID_MOVIE;
@@ -36,7 +35,7 @@ public class FavFragment extends Fragment {
     private List<ResultsItem> movieList = new ArrayList<>();
     private RecyclerView rvMoview;
     private AMovie aMovie;
-    public static AsyncTask<Void, Void, Cursor> asyncTask;
+    private MovieHelper movieHelper;
 
     public FavFragment() {
         // Required empty public constructor
@@ -49,48 +48,41 @@ public class FavFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_fav, container, false);
         initView(view);
-        getMovie();
+        loadDataFavorite();
         return view;
     }
 
-    @SuppressLint("StaticFieldLeak")
-    private void getMovie() {
-        asyncTask = new AsyncTask<Void, Void, Cursor>() {
-            @Override
-            protected Cursor doInBackground(Void... voids) {
-                movieList.clear();
-                return getContext().getContentResolver().query(CONTENT_URI,
-                        null,
-                        null,
-                        null,
-                        null);
+    private void loadDataFavorite() {
+        movieHelper = new MovieHelper(getContext());
+        movieHelper.open();
+        Cursor cursor = getContext().getContentResolver().query(CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            ResultsItem fav;
+            if (cursor.getCount() > 0) {
+                do {
+                    fav = new ResultsItem();
+                    fav.setId(cursor.getInt(cursor.getColumnIndexOrThrow(ID_MOVIE)));
+                    fav.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(TITLE)));
+                    fav.setOverview(cursor.getString(cursor.getColumnIndexOrThrow(OVERVIEW)));
+                    fav.setPosterPath(cursor.getString(cursor.getColumnIndexOrThrow(POSTER_PATH)));
+                    fav.setPosterPath(cursor.getString(cursor.getColumnIndexOrThrow(REALESE_DATE)));
+                    fav.setPosterPath(cursor.getString(cursor.getColumnIndexOrThrow(POSTER_PATH)));
+
+                    movieList.add(fav);
+                    cursor.moveToNext();
+
+                } while (!cursor.isAfterLast());
             }
-
-            @Override
-            protected void onPostExecute(Cursor cursor) {
-                super.onPostExecute(cursor);
-                cursor.moveToFirst();
-                ResultsItem fav;
-                if (cursor.getCount() > 0) {
-                    do {
-                        fav = new ResultsItem();
-                        fav.setId(cursor.getInt(cursor.getColumnIndexOrThrow(ID_MOVIE)));
-                        fav.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(TITLE)));
-                        fav.setOverview(cursor.getString(cursor.getColumnIndexOrThrow(OVERVIEW)));
-                        fav.setPosterPath(cursor.getString(cursor.getColumnIndexOrThrow(POSTER_PATH)));
-                        fav.setPosterPath(cursor.getString(cursor.getColumnIndexOrThrow(REALESE_DATE)));
-                        fav.setPosterPath(cursor.getString(cursor.getColumnIndexOrThrow(POSTER_PATH)));
-
-                        movieList.add(fav);
-                        cursor.moveToNext();
-
-                    } while (!cursor.isAfterLast());
-                }
-                cursor.close();
-                aMovie.notifyDataSetChanged();
-            }
-        };
-
+            cursor.close();
+            movieHelper.close();
+            aMovie.notifyDataSetChanged();
+        }
     }
 
     private void initView(View view) {

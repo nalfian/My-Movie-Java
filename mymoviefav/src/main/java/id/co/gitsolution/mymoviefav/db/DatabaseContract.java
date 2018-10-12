@@ -1,4 +1,4 @@
-package com.example.toshiba.mymovie.db;
+package id.co.gitsolution.mymoviefav.db;
 
 import android.net.Uri;
 import android.provider.BaseColumns;

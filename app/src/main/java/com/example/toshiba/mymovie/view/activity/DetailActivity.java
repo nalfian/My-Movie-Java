@@ -17,6 +17,7 @@ import com.example.toshiba.mymovie.model.ResultsItem;
 import com.squareup.picasso.Picasso;
 
 import static com.example.toshiba.mymovie.db.DatabaseContract.MovieColumns.CONTENT_URI;
+import static com.example.toshiba.mymovie.db.DatabaseContract.MovieColumns.ID;
 import static com.example.toshiba.mymovie.db.DatabaseContract.MovieColumns.ID_MOVIE;
 import static com.example.toshiba.mymovie.db.DatabaseContract.MovieColumns.OVERVIEW;
 import static com.example.toshiba.mymovie.db.DatabaseContract.MovieColumns.POSTER_PATH;
@@ -47,7 +48,6 @@ public class DetailActivity extends AppCompatActivity {
     private void loadDataFavorite() {
         movieHelper = new MovieHelper(this);
         movieHelper.open();
-
         Cursor cursor = getContentResolver().query(
                 Uri.parse(CONTENT_URI + "/" + resultsItem.getId()),
                 null,
@@ -56,10 +56,11 @@ public class DetailActivity extends AppCompatActivity {
                 null);
 
         if (cursor != null) {
-            if (cursor.moveToFirst()) {
+            if (cursor.getCount() != 0) {
                 isFavorite = true;
             }
             cursor.close();
+            movieHelper.close();
         }
         setFavoriteButton();
     }
@@ -101,6 +102,7 @@ public class DetailActivity extends AppCompatActivity {
         isFavorite = true;
         setFavoriteButton();
         ContentValues values = new ContentValues();
+        values.put(ID, resultsItem.getId());
         values.put(ID_MOVIE, resultsItem.getId());
         values.put(TITLE, resultsItem.getTitle());
         values.put(OVERVIEW, resultsItem.getOverview());
