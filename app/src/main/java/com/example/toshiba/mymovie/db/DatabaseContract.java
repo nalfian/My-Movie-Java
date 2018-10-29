@@ -1,5 +1,6 @@
 package com.example.toshiba.mymovie.db;
 
+import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
@@ -20,5 +21,18 @@ public class DatabaseContract {
                 .authority(AUTHORITY)
                 .appendPath(TABLE_MOVIE)
                 .build();
+
+        public static String getColumnString(Cursor cursor, String columnName){
+            return cursor.getString(cursor.getColumnIndexOrThrow(columnName));
+        }
+
+
+        public static int getColumnInt(Cursor cursor,String columnName){
+            return cursor.getInt(cursor.getColumnIndexOrThrow(columnName));
+        }
+
+        public static double getColumnDouble(Cursor cursor,String columnName){
+            return  cursor.getDouble(cursor.getColumnIndexOrThrow(columnName));
+        }
     }
 }

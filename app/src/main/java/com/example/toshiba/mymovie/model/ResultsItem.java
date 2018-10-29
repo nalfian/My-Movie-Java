@@ -1,11 +1,20 @@
 package com.example.toshiba.mymovie.model;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+
+import static android.provider.BaseColumns._ID;
+import static com.example.toshiba.mymovie.db.DatabaseContract.MovieColumns.OVERVIEW;
+import static com.example.toshiba.mymovie.db.DatabaseContract.MovieColumns.POSTER_PATH;
+import static com.example.toshiba.mymovie.db.DatabaseContract.MovieColumns.REALESE_DATE;
+import static com.example.toshiba.mymovie.db.DatabaseContract.MovieColumns.TITLE;
+import static com.example.toshiba.mymovie.db.DatabaseContract.MovieColumns.getColumnInt;
+import static com.example.toshiba.mymovie.db.DatabaseContract.MovieColumns.getColumnString;
 
 public class ResultsItem implements Parcelable{
 
@@ -237,4 +246,12 @@ public class ResultsItem implements Parcelable{
 			",vote_count = '" + voteCount + '\'' + 
 			"}";
 		}
+
+	public ResultsItem(Cursor cursor) {
+		this.id = getColumnInt(cursor, _ID);
+		this.title = getColumnString(cursor, TITLE);
+		this.overview = getColumnString(cursor, OVERVIEW);
+		this.posterPath = getColumnString(cursor, POSTER_PATH);
+		this.releaseDate = getColumnString(cursor, REALESE_DATE);
+	}
 }

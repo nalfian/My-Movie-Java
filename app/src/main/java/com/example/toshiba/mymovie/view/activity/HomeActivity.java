@@ -16,6 +16,9 @@ import android.view.MenuItem;
 import com.example.toshiba.mymovie.R;
 import com.example.toshiba.mymovie.view.fragment.FavFragment;
 import com.example.toshiba.mymovie.view.fragment.HomeFragment;
+import com.example.toshiba.mymovie.view.reminder.AlarmReceiver;
+import com.example.toshiba.mymovie.view.reminder.SchedulerService;
+import com.example.toshiba.mymovie.view.reminder.SchedulerTask;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -42,6 +45,12 @@ public class HomeActivity extends AppCompatActivity
         fragment = new HomeFragment();
         switchFragment(fragment);
         getSupportActionBar().setTitle(getString(R.string.home));
+
+        SchedulerTask schedulerTask = new SchedulerTask(this);
+        schedulerTask.createTask();
+
+        AlarmReceiver alarmReceiver = new AlarmReceiver();
+        alarmReceiver.setRepeatingAlarm(this, "07:00", getString(R.string.message_daily_reminder));
     }
 
     @Override

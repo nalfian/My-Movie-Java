@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">My Movie</string>
+    <string name="app_name">Movie</string>
     <string name="cari">Search Movie </string>
     <string name="keluar">Exit</string>
     <string name="ubah_bahasa">Change Language</string>
