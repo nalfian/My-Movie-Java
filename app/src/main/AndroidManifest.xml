@@ -23,6 +23,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".view.activity.HomeActivity"
+            android:configChanges="locale|keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,10 +33,12 @@
         </activity>
         <activity
             android:name=".view.activity.DetailActivity"
+            android:configChanges="locale|keyboardHidden|orientation|screenSize"
             android:parentActivityName=".view.activity.CariActivity" />
 
         <activity
             android:name=".view.activity.CariActivity"
+            android:configChanges="locale|keyboardHidden|orientation|screenSize"
             android:label="@string/cari"
             android:parentActivityName=".view.activity.HomeActivity" />
 
