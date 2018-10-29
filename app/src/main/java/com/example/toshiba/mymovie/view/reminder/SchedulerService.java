@@ -80,8 +80,8 @@ public class SchedulerService extends GcmTaskService {
         intent.putExtra("title", item.getTitle());
         intent.putExtra("date", item.getReleaseDate());
         intent.putExtra("overview", item.getOverview());
-        intent.putExtra("backdroppath", "https://image.tmdb.org/t/p/w500/" + item.getBackdropPath());
-        intent.putExtra("poster", "https://image.tmdb.org/t/p/w500/" + item.getPosterPath());
+        intent.putExtra("backdroppath", "https://image.tmdb.org/t/p/w500" + item.getBackdropPath());
+        intent.putExtra("poster", "https://image.tmdb.org/t/p/w500" + item.getPosterPath());
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(context,
                         notifId,

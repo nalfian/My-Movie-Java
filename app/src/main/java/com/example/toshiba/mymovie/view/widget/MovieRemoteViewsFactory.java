@@ -84,7 +84,7 @@ public class MovieRemoteViewsFactory implements
         try {
             bitmap = Glide.with(mContext)
                     .asBitmap()
-                    .load(item.getPosterPath())
+                    .load("http://image.tmdb.org/t/p/w500"+item.getPosterPath())
                     .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                     .get();
 
